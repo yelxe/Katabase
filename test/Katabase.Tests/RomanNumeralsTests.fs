@@ -34,26 +34,7 @@ module ``RomanNumerals Tests`` =
             toRoman 10 |> should equal "X"
         
         [<Test>]
-        let ``11 to 20`` () =
-            toRoman 11 |> should equal "XI"
-            toRoman 12 |> should equal "XII"
-            toRoman 13 |> should equal "XIII"
-            toRoman 14 |> should equal "XIV"
-            toRoman 15 |> should equal "XV"
-            toRoman 16 |> should equal "XVI"
-            toRoman 17 |> should equal "XVII"
-            toRoman 18 |> should equal "XVIII"
-            toRoman 19 |> should equal "XIX"
-            toRoman 20 |> should equal "XX"
-        
-        [<Test>]
-        let ``High Numbers`` () =
-            toRoman 4000 |> should equal "M^V"
-            toRoman 6500 |> should equal "^VMD"
-
-        [<Test>]
         let ``Other Numbers`` () =
-            toRoman   99 |> should equal "XCIX"
             toRoman 1337 |> should equal "MCCCXXXVII"
             toRoman 1975 |> should equal "MCMLXXV"
             toRoman 1999 |> should equal "MCMXCIX"
@@ -61,6 +42,32 @@ module ``RomanNumerals Tests`` =
 
         [<Test>]
         let ``Out of Range Numbers`` () =
-            toRoman     0 |> should equal ""
-            toRoman 40000 |> should equal ""
+            toRoman    0 |> should equal ""
+            toRoman 4000 |> should equal ""
+    
+    module ``toArabic`` =
         
+        [<Test>]
+        let ``I to X`` () =
+            toArabic "I"    |> should equal  1
+            toArabic "II"   |> should equal  2
+            toArabic "III"  |> should equal  3
+            toArabic "IV"   |> should equal  4
+            toArabic "V"    |> should equal  5
+            toArabic "VI"   |> should equal  6
+            toArabic "VII"  |> should equal  7
+            toArabic "VIII" |> should equal  8
+            toArabic "IX"   |> should equal  9
+            toArabic "X"    |> should equal 10
+        
+        [<Test>]
+        let ``Other Numerals`` () =
+            toArabic "MCCCXXXVII" |> should equal 1337
+            toArabic "MCMLXXV"    |> should equal 1975
+            toArabic "MCMXCIX"    |> should equal 1999
+            toArabic "MMXIV"      |> should equal 2014
+
+        [<Test>]
+        let ``Invalid Numerals`` () =
+            toArabic "A"    |> should equal 0
+            toArabic "VA"   |> should equal 0
