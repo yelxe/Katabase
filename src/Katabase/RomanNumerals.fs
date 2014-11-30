@@ -2,40 +2,35 @@
 
 module RomanNumerals =
     
-    let I = "I"
-    let V = "V"
-    let X = "X"
-    let L = "L"
-    let C = "C"
-    let D = "D"
-    let M = "M"
-    let I' = "^I"
-    let V' = "^V"
-    let X' = "^X"
-
     let toRoman arabicNumeral =
         
-        let sets = [(I,V,X); (X,L,C); (C,D,M); (M,V',X')]
+        let patternSets = [("I","V","X"); ("X","L","C"); ("C","D","M"); ("M","^V","^X")]
 
-        let tally x =
-            String.replicate x I
+        let supressInvalidRange n =
+            match n with
+            | n when n <= 0     -> None
+            | n when n >= 40000 -> None
+            | _                 -> Some n
 
-        let replace (fnd) (rpl) (str:string) =
+        let tally n =
+            match n with
+            | Some n    -> String.replicate n "I"
+            | None      -> ""
+
+        let replace fnd rpl (str:string) =
             str.Replace((fnd |> String.concat ""), (rpl |> String.concat ""))
         
-        let replaceFor (a, b, c) (str:string) =
+        let replaceFor (i, v, x) (str:string) =
             str
-            |> replace [a;a;a;a;a]  [b]
-            |> replace [a;a;a;a]    [a;b]
-            |> replace [b;b]        [c]
-            |> replace [b;a;b]      [a;c]
+            |> replace [i;i;i;i;i]  [v]
+            |> replace [i;i;i;i]    [i;v]
+            |> replace [v;v]        [x]
+            |> replace [v;i;v]      [i;x]
 
         arabicNumeral
+        |> supressInvalidRange
         |> tally
-        |> replaceFor sets.[0]
-        |> replaceFor sets.[1]
-        |> replaceFor sets.[2]
-        |> replaceFor sets.[3]
-
-    let toArabic romanNumeral =
-        0
+        |> replaceFor patternSets.[0]
+        |> replaceFor patternSets.[1]
+        |> replaceFor patternSets.[2]
+        |> replaceFor patternSets.[3]

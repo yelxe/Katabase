@@ -19,6 +19,7 @@ module ``RomanNumerals Tests`` =
 //            ]
 
 
+        
         [<Test>]
         let ``1 to 10`` () =
             toRoman  1 |> should equal "I"
@@ -46,11 +47,20 @@ module ``RomanNumerals Tests`` =
             toRoman 20 |> should equal "XX"
         
         [<Test>]
-        let ``Other Numbers`` () =
-            toRoman 1999 |> should equal "MCMXCIX"
-            toRoman 99 |> should equal "XCIX"
-
-        [<Test>]
         let ``High Numbers`` () =
             toRoman 4000 |> should equal "M^V"
             toRoman 6500 |> should equal "^VMD"
+
+        [<Test>]
+        let ``Other Numbers`` () =
+            toRoman   99 |> should equal "XCIX"
+            toRoman 1337 |> should equal "MCCCXXXVII"
+            toRoman 1975 |> should equal "MCMLXXV"
+            toRoman 1999 |> should equal "MCMXCIX"
+            toRoman 2014 |> should equal "MMXIV"
+
+        [<Test>]
+        let ``Out of Range Numbers`` () =
+            toRoman     0 |> should equal ""
+            toRoman 40000 |> should equal ""
+        
