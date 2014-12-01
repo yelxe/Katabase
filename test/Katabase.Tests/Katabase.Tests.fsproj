@@ -49,6 +49,7 @@
   </Choose>
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
+    <Compile Include="BowlingGameTests.fs" />
     <Compile Include="RomanNumeralsTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
