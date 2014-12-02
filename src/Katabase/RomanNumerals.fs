@@ -2,7 +2,7 @@
 
 module RomanNumerals =
     
-    let patternSets = [("I","V","X"); ("X","L","C"); ("C","D","M")]
+    let patternSet = [("I","V","X"); ("X","L","C"); ("C","D","M")]
 
     let replace fnd rpl (str:string) =
         str.Replace((fnd |> String.concat ""), (rpl |> String.concat ""))
@@ -20,19 +20,19 @@ module RomanNumerals =
             | Some n  -> String.replicate n "I"
             | None    -> ""
 
-        let replaceFor (i, v, x) (str:string) =
-            str
-            |> replace [i;i;i;i;i]  [v]
-            |> replace [i;i;i;i]    [i;v]
-            |> replace [v;v]        [x]
-            |> replace [v;i;v]      [i;x]
+        let replaceFor patterns (str:string) =
+            let replaceForPattern (i, v, x) (str:string) =
+                str
+                |> replace [i;i;i;i;i]  [v]
+                |> replace [i;i;i;i]    [i;v]
+                |> replace [v;v]        [x]
+                |> replace [v;i;v]      [i;x]
+            patterns |> List.fold(fun s p -> replaceForPattern p s) str
 
         arabicNumeral
         |> supressInvalidRange
         |> tally
-        |> replaceFor patternSets.[0]
-        |> replaceFor patternSets.[1]
-        |> replaceFor patternSets.[2]
+        |> replaceFor patternSet
     
     let toArabic romanNumeral =
         
@@ -48,17 +48,17 @@ module RomanNumerals =
             | 0  -> str
             | _  -> ""
             
-        let replaceFor (i, v, x) (str:string) =
-            str
-            |> replace [i;x]    [v;i;v]
-            |> replace [x]      [v;v]
-            |> replace [i;v]    [i;i;i;i]
-            |> replace [v]      [i;i;i;i;i]
+        let replaceFor patterns (str:string) =
+            let replaceForPattern (i, v, x) (str:string) =
+                str
+                |> replace [i;x]    [v;i;v]
+                |> replace [x]      [v;v]
+                |> replace [i;v]    [i;i;i;i]
+                |> replace [v]      [i;i;i;i;i]
+            patterns |> List.rev |> List.fold(fun s p -> replaceForPattern p s) str
         
         romanNumeral
         |> suppressInvalidChars
-        |> replaceFor patternSets.[2]
-        |> replaceFor patternSets.[1]
-        |> replaceFor patternSets.[0]
+        |> replaceFor patternSet
         |> String.length
         
