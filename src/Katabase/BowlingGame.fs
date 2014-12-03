@@ -2,33 +2,22 @@
 
 module BowlingGame =
 
-    type Bonus =
-        | Strike
-        | Spare
-        | NoBonus
-
-    type Game=(int*int)list
+    type Game = (int*int)list
 
     let NewGame = []
 
-    let playFrame (r1, r2) = List.append [(r1, r2)]
+    let playFrame frame game = List.append game [frame]
     
     let score (game:Game) =
-        
-        
+                
+        let scoreNextRoll i = 
+            game.[i + 1] |> fst
+
         let scoreFrame i (a, b) =
-            a + b
-
-
-//            match snd (frameResult frame1) with
-//            | Strike  -> match snd (frameResult frame2) with
-//                           | Strike  -> both frame1 + fst frame2 + fst frame3
-//                           | _       -> both frame1 + both frame2
-//            | Spare   -> both frame1 + fst frame2
-//            | _       -> both frame1
+            match a + b with
+            | 10  -> a + b + scoreNextRoll i
+            | _   -> a + b
 
         game 
         |> List.mapi scoreFrame
         |> List.sum
-
-        //frames |> List.iteri(fun a b c -> scoreFrame frames[i] frames.[i+1] frames.[i+2]) |> List.sum
