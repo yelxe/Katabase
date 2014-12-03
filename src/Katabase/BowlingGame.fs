@@ -1,29 +1,32 @@
 ﻿namespace Katabase
 
 module BowlingGame =
+
+    type Frame = (int*int)
+    type Game = (Frame)list
     
-    let frame (first, second) (score, spares) =
-        
-        let bonus =
-            match spares with
-            | 0  -> 0
-            | 1  -> first
-            | _  -> first + second
+    let NewGame = []
 
-        let earnedSpares =
-            match (first, second) with
-            | (10, 0)                 -> 2
-            | (f, s) when f + s = 10  -> 1
-            | _                       -> 0
+    let playFrame frame game = List.append game [frame]
+    
+    let score (game:Game) =
+                
+        let scoreNextRoll i = 
+            game.[i + 1] |> fst
 
-        let usedSpares =
-            match (first, second) with
-            | (10, 0)  -> 1
-            | _        -> 2
-            
-        let unusedSpares =
-            match spares - usedSpares with
-            | n when n < 0  -> 0
-            | a             -> a
+        let scoreNextTwoRolls i =
+            match fst game.[i + 1] with
+            | 10  -> fst game.[i + 1] + fst game.[i + 2]
+            | _   -> fst game.[i + 1] + snd game.[i + 1]
 
-        (score + first + second + bonus, unusedSpares + earnedSpares)
+        let scoreFrame i (a, b) =
+            match a + b with
+            | 10 when a = 10  -> 10 + scoreNextTwoRolls i
+            | 10              -> 10 + scoreNextRoll i
+            | n               -> n
+
+        game
+        |> Seq.take 10
+        |> List.ofSeq
+        |> List.mapi scoreFrame
+        |> List.sum
