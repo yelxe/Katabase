@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BowlingGame.fs" />
     <Compile Include="RomanNumerals.fs" />
+    <Compile Include="SuperMarket.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
