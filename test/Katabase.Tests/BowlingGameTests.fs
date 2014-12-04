@@ -4,7 +4,7 @@ open NUnit.Framework
 open FsUnit
 open Katabase.BowlingGame
 
-module ``BowlingGame Tests`` =
+module ``BowlingGame Tests `` =
     
     let gutter _ = (0, 0)
     let spare n _ = (n, 10 - n)
@@ -12,7 +12,7 @@ module ``BowlingGame Tests`` =
 
     let playFor f n = List.init n f
     
-    module ``Partial Games`` =
+    module `` score`` =
         
         [<Test>]
         let ``Two frames w/ no spares`` () =
@@ -50,8 +50,6 @@ module ``BowlingGame Tests`` =
             |> playFrame (1, 2)   //  0
             |> score
             |> should equal 37
-
-    module ``Complete Games`` =
         
         [<Test>]
         let ``Perfect Game`` () =

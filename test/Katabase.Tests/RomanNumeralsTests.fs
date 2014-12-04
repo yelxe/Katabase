@@ -4,21 +4,9 @@ open NUnit.Framework
 open FsUnit
 open Katabase.RomanNumerals
 
-module ``RomanNumerals Tests`` =
+module ``RomanNumerals Tests `` =
     
-    module ``toRoman`` =
-        
-//        [<TestCaseSource("convertDictionary")>]
-//        let ``Should convert correctly`` (a, r) =
-//            toRoman a |> should equal r
-//
-//        let convertDictionary () =
-//            [
-//                [|(1, "I")|];
-//                [|(2, "II")|]
-//            ]
-
-
+    module `` toRoman`` =
         
         [<Test>]
         let ``1 to 10`` () =
@@ -45,7 +33,7 @@ module ``RomanNumerals Tests`` =
             toRoman    0 |> should equal ""
             toRoman 4000 |> should equal ""
     
-    module ``toArabic`` =
+    module `` toArabic`` =
         
         [<Test>]
         let ``I to X`` () =
