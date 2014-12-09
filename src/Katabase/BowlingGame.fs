@@ -5,28 +5,27 @@ module BowlingGame =
     type Frame = (int*int)
     type Game = (Frame)list
     
+    let (|Strike|Spare|Lame|) (a, b) = 
+        match a + b with
+        | 10 when a = 10 -> Strike
+        | 10 -> Spare
+        | _  -> Lame
+
     let NewGame = []
 
     let playFrame frame game = List.append game [frame]
     
     let score (game:Game) =
                 
-        let scoreNextRoll i = 
-            game.[i + 1] |> fst
-
-        let scoreNextTwoRolls i =
-            match fst game.[i + 1] with
-            | 10  -> fst game.[i + 1] + fst game.[i + 2]
-            | _   -> fst game.[i + 1] + snd game.[i + 1]
-
-        let scoreFrame i (a, b) =
-            match a + b with
-            | 10 when a = 10  -> 10 + scoreNextTwoRolls i
-            | 10              -> 10 + scoreNextRoll i
-            | n               -> n
+        let rec scoreFrames i frames  =
+            let next = scoreFrames (i + 1)
+            match i, frames with
+            | 10, _            -> 0
+            | _, []            -> 0
+            | _, Strike::Strike::(a,b)::rest  -> 20 + a + next ((10,0)::(a,b)::rest)
+            | _, Strike::(a,b)::rest          -> 10 + a + b + next ((a,b)::rest)
+            | _, Spare::(a,b)::rest           -> 10 + a + next ((a,b)::rest)
+            | _, (a,b)::rest                  -> a + b + next rest
 
         game
-        |> Seq.take 10
-        |> List.ofSeq
-        |> List.mapi scoreFrame
-        |> List.sum
+        |> scoreFrames 0
