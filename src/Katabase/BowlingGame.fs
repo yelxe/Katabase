@@ -11,22 +11,21 @@ module BowlingGame =
     
     let score (game:Game) =
                 
-        let scoreNextRoll i = 
-            game.[i + 1] |> fst
+        let scoreNextRoll = function
+        | (a,_)::_  -> a
+        | []        -> 0
 
-        let scoreNextTwoRolls i =
-            match fst game.[i + 1] with
-            | 10  -> fst game.[i + 1] + fst game.[i + 2]
-            | _   -> fst game.[i + 1] + snd game.[i + 1]
+        let scoreNextTwoRolls = function
+        | (10,0)::(c,_)::_  -> 10 + c
+        | (a,b)::_          -> a + b
+        | []                -> 0
 
-        let scoreFrame i (a, b) =
-            match a + b with
-            | 10 when a = 10  -> 10 + scoreNextTwoRolls i
-            | 10              -> 10 + scoreNextRoll i
-            | n               -> n
+        let rec scoreFrames = function
+        | (10,0)::rest                 -> 10 + scoreNextTwoRolls rest + scoreFrames rest
+        | (a,b)::rest when a + b = 10  -> 10 + scoreNextRoll rest + scoreFrames rest
+        | (a,b)::rest                  -> a + b + scoreFrames rest
+        | []                           -> 0
 
         game
-        |> Seq.take 10
         |> List.ofSeq
-        |> List.mapi scoreFrame
-        |> List.sum
+        |> scoreFrames
