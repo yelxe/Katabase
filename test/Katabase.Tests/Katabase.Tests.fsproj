@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="BowlingGameTests.fs" />
     <Compile Include="RomanNumeralsTests.fs" />
+    <Compile Include="YahtzeeTests.fs" />
     <Content Include="packages.config" />
     <Content Include="app.config" />
   </ItemGroup>
