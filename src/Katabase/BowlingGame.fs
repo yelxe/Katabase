@@ -20,12 +20,13 @@ module BowlingGame =
         | (a,b)::_          -> a + b
         | []                -> 0
 
-        let rec scoreFrames = function
-        | (10,0)::rest                 -> 10 + scoreNextTwoRolls rest + scoreFrames rest
-        | (a,b)::rest when a + b = 10  -> 10 + scoreNextRoll rest + scoreFrames rest
-        | (a,b)::rest                  -> a + b + scoreFrames rest
-        | []                           -> 0
+        let rec scoreFrames i frames  =
+            match i, frames with
+            | 10, _                           -> 0
+            | _, []                           -> 0
+            | _, (10,0)::rest                 -> 10 + scoreNextTwoRolls rest + scoreFrames (i + 1) rest
+            | _, (a,b)::rest when a + b = 10  -> 10 + scoreNextRoll rest + scoreFrames (i + 1) rest
+            | _, (a,b)::rest                  -> a + b + scoreFrames (i + 1) rest
 
         game
-        |> List.ofSeq
-        |> scoreFrames
+        |> scoreFrames 0
