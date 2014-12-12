@@ -6,7 +6,7 @@ open Katabase.Yahtzee
 
 module ``Yahtzee Tests `` =
     
-    module `` scoreNumber `` =
+    module `` scoreForNumber `` =
         
         [<Test>]
         let ``Score for 1 thru 6`` () =
@@ -16,9 +16,9 @@ module ``Yahtzee Tests `` =
                     (2, (1,2,3,4,5),  2); (2, (2,1,4,6,2),  4); (2, (2,2,2,2,2), 10)
                 ]
             for (number, roll, expected) in cases do
-                scoreNumber number roll |> should equal expected
+                scoreForNumber number roll |> should equal expected
 
-    module `` hasEnough `` =
+    module `` countNumber `` =
         
         [<Test>]
         let ``Test`` () =

@@ -12,7 +12,7 @@ module Yahtzee =
         let r1, r2, r3, r4, r5 = roll
         seq [r1;r2;r3;r4;r5]
 
-    let scoreNumber n (roll:Roll) =
+    let scoreForNumber n (roll:Roll) =
         roll
         |> toSeq
         |> Seq.filter((=) n)
